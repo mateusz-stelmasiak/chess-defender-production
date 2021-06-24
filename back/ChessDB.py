@@ -124,8 +124,8 @@ class ChessDB:
                     "(GameID, ParticipantID, move_order, Move)"
                     "VALUES (%s, %s, %s, %s)")
 
-        move_string = str(Move['startingSquare']) + str(Move['targetSquare']) + " " + Move['mtype']
-        data_move = (game_id, self.get_participant(Color, game_id)[0], move_order, move_string)
+
+        data_move = (game_id, self.get_participant(Color, game_id)[0], move_order, Move)
         mycursor.execute(sql_move, data_move)
         self.mydb.commit()
         mycursor.close()
@@ -323,7 +323,7 @@ class ChessDB:
         mycursor = self.mydb.cursor()
 
         sql_count = (
-            "SELECT COUNT(Moves.moveID) FROM Games, Moves WHERE Moves.GameID = %s AND Games.GameID = Moves.GameID")
+            "SELECT FLOOR(COUNT(Moves.moveID)/2) FROM Games, Moves WHERE Moves.GameID = %s AND Games.GameID = Moves.GameID")
 
         data_count = (gameID,)
         mycursor.execute(sql_count, data_count)

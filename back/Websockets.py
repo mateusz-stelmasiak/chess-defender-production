@@ -637,8 +637,8 @@ def make_move(data):
 
     new_FEN= ChessLogic.update_FEN_by_AN_move(game_info.curr_FEN,move_AN_notation)
     games[game_room_id].curr_FEN = new_FEN
-    move_order = game_info.num_of_moves
-    games[game_room_id].num_of_moves = move_order + 1
+    move_order = int(game_info.num_of_moves/2)
+    games[game_room_id].num_of_moves += 1
     # get opposite turn
     opp_turn = 'w'
     if curr_turn == 'w':
@@ -648,8 +648,8 @@ def make_move(data):
     try:
         game_id = game_info.game_id
         db = ChessDB.ChessDB()
-        print("ADDING MOVE TO BD " + move_AN_notation)
-        db.add_move(game_id, str(curr_turn).upper(), move_order, move_AN_notation)
+        print("ADDING MOVE TO BD " + str(move_AN_notation))
+        db.add_move(game_id, str(curr_turn).upper(), move_order, str(move_AN_notation))
     except Exception as ex:
         print("DB ERROR" + str(ex))
 

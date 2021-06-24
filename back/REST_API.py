@@ -130,8 +130,8 @@ def login():
     req_url = request.environ.get('HTTP_ORIGIN', 'default value')
     curr_domain = get_domain_from_url(req_url)
     if curr_domain in allowed_domains:
-        resp.set_cookie('refreshToken', refresh_token, domain=curr_domain, samesite='None',
-                        secure='false')  # path="/refresh_session"
+        resp.set_cookie('refreshToken', refresh_token, domain=domain, samesite='Lax',
+                        secure=False)  # path="/refresh_session"
     return resp
 
 
@@ -191,8 +191,8 @@ def logout():
     req_url = request.environ.get('HTTP_ORIGIN', 'default value')
     curr_domain = get_domain_from_url(req_url)
     if curr_domain in allowed_domains:
-        resp.set_cookie('refreshToken', 'none', domain=curr_domain, samesite='None',
-                        secure='false')  # path="/refresh_session"
+        resp.set_cookie('refreshToken', 'none', domain=domain, samesite='Lax',
+                        secure=False)   # path="/refresh_session"
     return resp
 
 
@@ -412,7 +412,7 @@ def get_history():
         try:
             white = db.get_participant('White', game[0])
             black = db.get_participant('Black', game[0])
-            numOfMoves = db.count_moves(game[0])
+            numOfMoves = int(db.count_moves(game[0])[0])
 
             black_score = str(black[3])
             white_score = str(white[3])
